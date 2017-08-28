@@ -22,6 +22,8 @@ public class ClientActions {
         this.clientBase = clientBase;
     }
 
+    // Creating client
+
     public void createClient() {
         System.out.println("Enter firstname: ");
         String firstName = Keyboard.input();
@@ -33,6 +35,8 @@ public class ClientActions {
         Client client = new Client(clientId, firstName, lastName, money);
         clientBase.addClient(client);
     }
+
+    // Saving client data to file
 
     public void clientDataToFile() {
         File fileName = new File("D:\\client.txt");
@@ -54,6 +58,8 @@ public class ClientActions {
         }
     }
 
+    // Reading client data from file and building database in running application
+
     public void clientDataToRead() {
         File fileName = new File("D:\\client.txt");
         clientBase.clean();
@@ -69,16 +75,22 @@ public class ClientActions {
         clientId = maxId();
     }
 
-    private int maxId() {
+    // Getting value of maximum id in database for new client
+
+    public int maxId() {
         return clientBase.getClients().stream()
                 .map(Client::getId)
                 .max(Comparator.naturalOrder())
                 .get();
     }
 
+    // Method for show clients list
+
     public void clientListShow() {
         clientBase.getClients().forEach(System.out::println);
     }
+
+    // Method for search client by name
 
     public Client clientFind(String name) {
         return clientBase.getClients().stream()

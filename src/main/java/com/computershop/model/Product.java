@@ -1,24 +1,13 @@
 package com.computershop.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@AllArgsConstructor
+@Data
 public class Product {
     private int id;
     private String name;
     private double price;
     private Currency currency;
-
-    public Product(int id, String name, double price, Currency currency) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.currency = currency;
-    }
 }
