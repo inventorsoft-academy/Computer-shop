@@ -1,5 +1,6 @@
 package com.computershop.service;
 
+import com.computershop.model.Client;
 import com.computershop.model.Currency;
 import com.computershop.model.Product;
 import com.computershop.repository.Store;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Objects;
 
@@ -16,7 +18,7 @@ public class ProductActions {
     private static final String DELIMITER = "/";
 
     private Store store;
-    private int productId = 1;
+    private int productId = 0;
 
     @Autowired
     public ProductActions(Store store) {
@@ -32,9 +34,10 @@ public class ProductActions {
         String currency = Keyboard.input();
         System.out.println("Enter quantity: ");
         int quantity = Integer.parseInt(Keyboard.input());
+        productId++;
         Product product = new Product(productId, name, price, Currency.valueOf(currency));
         store.addProduct(product, quantity);
-        productId++;
+
     }
 
     public void productDataToFile() {
@@ -57,22 +60,25 @@ public class ProductActions {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
     public void productDataToRead() {
         File fileName = new File("D:\\product.txt");
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            while (reader.ready()) {
-                String[] part = reader.readLine().split(DELIMITER);
-                store.addProduct(new Product(Integer.valueOf(part[0]),
-                                part[1], Double.valueOf(part[2]),
-                                Currency.valueOf(part[3])),
-                        Integer.valueOf(part[4]));
+        if (fileName.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+                while (reader.ready()) {
+                    String[] part = reader.readLine().split(DELIMITER);
+                    store.addProduct(new Product(Integer.valueOf(part[0]),
+                                    part[1], Double.valueOf(part[2]),
+                                    Currency.valueOf(part[3])),
+                            Integer.valueOf(part[4]));
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            productId = maxId();
         }
     }
 
@@ -107,5 +113,12 @@ public class ProductActions {
         store.getProducts().remove(product);
         product.setPrice(newPrice);
         store.getProducts().put(product, quantity);
+    }
+
+    public int maxId() {
+        return store.getProducts().entrySet().stream()
+                .map(pair -> pair.getKey().getId())
+                .max(Comparator.naturalOrder())
+                .get();
     }
 }

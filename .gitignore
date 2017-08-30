@@ -2,7 +2,7 @@
 *.class
 
 /.idea/
-*.iml
+.idea/Computer-Shop.iml
 
 # Log file
 *.log

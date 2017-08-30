@@ -28,8 +28,8 @@ public class ClientActions {
         System.out.println("Enter lastname: ");
         String lastName = Keyboard.input();
         System.out.println("Enter money: ");
-        clientId++;
         double money = Double.parseDouble(Keyboard.input());
+        clientId++;
         Client client = new Client(clientId, firstName, lastName, money);
         clientBase.addClient(client);
     }
@@ -50,26 +50,28 @@ public class ClientActions {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
     public void clientDataToRead() {
         File fileName = new File("D:\\client.txt");
         clientBase.clean();
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            while (reader.ready()) {
-                String[] part = reader.readLine().split(DELIMITER);
-                clientBase.addClient(new Client(Integer.valueOf(part[0]),
-                        part[1], part[2], Double.valueOf(part[3])));
+        if (fileName.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+                while (reader.ready()) {
+                    String[] part = reader.readLine().split(DELIMITER);
+                    clientBase.addClient(new Client(Integer.valueOf(part[0]),
+                            part[1], part[2], Double.valueOf(part[3])));
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            clientId = maxId();
         }
-        clientId = maxId();
     }
 
-    private int maxId() {
+    public int maxId() {
         return clientBase.getClients().stream()
                 .map(Client::getId)
                 .max(Comparator.naturalOrder())

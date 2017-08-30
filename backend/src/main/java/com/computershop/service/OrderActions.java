@@ -81,7 +81,7 @@ public class OrderActions {
                 writer.newLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -89,18 +89,20 @@ public class OrderActions {
         File fileName = new File("D:\\orders.txt");
         store.clean();
         DateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            while (reader.ready()) {
-                String[] part = reader.readLine().split(DELIMITER);
-                String date = part[9];
-                Date resultDate = df.parse(date);
-                store.addOrder(new Order(new Product(Integer.valueOf(part[0]), part[1], Double.valueOf(part[2]), Currency.valueOf(part[3])),
-                        Integer.valueOf(part[4]), new Client(Integer.valueOf(part[5]), part[6], part[7], Double.valueOf(part[8])), resultDate));
+        if (fileName.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+                while (reader.ready()) {
+                    String[] part = reader.readLine().split(DELIMITER);
+                    String date = part[9];
+                    Date resultDate = df.parse(date);
+                    store.addOrder(new Order(new Product(Integer.valueOf(part[0]), part[1], Double.valueOf(part[2]), Currency.valueOf(part[3])),
+                            Integer.valueOf(part[4]), new Client(Integer.valueOf(part[5]), part[6], part[7], Double.valueOf(part[8])), resultDate));
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            } catch (ParseException pe) {
+                System.out.println(pe.getMessage());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException pe) {
-            pe.printStackTrace();
         }
     }
 
