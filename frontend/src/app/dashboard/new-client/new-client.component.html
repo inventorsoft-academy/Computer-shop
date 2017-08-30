@@ -1,0 +1,12 @@
+<div class="container" style="width: 35%;">
+  <form [formGroup]="newClientForm" (submit)="addClient()">
+    <label for="firstName">FirstName</label>
+    <input formControlName="firstName" id="firstName" class="form-control">
+    <label for="lastName">LastName</label>
+    <input formControlName="lastName" id="lastName" class="form-control">
+    <label for="money">Money</label>
+    <input formControlName="money" id="money" class="form-control">
+    <hr>
+    <button type="submit" class="btn btn-primary" [disabled]="newClientForm.invalid">Add Client</button>
+  </form>
+</div>

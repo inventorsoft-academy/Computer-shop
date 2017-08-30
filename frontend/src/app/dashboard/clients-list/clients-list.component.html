@@ -1,0 +1,19 @@
+<h1>All clients</h1>
+<table class="table table-responsive">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>FirstName</th>
+    <th>LastName</th>
+    <th>Money</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let client of clientsList" (click)="showClientInfo(client.id)">
+    <td>{{client.id}}</td>
+    <td>{{client.firstName}}</td>
+    <td>{{client.lastName}}</td>
+    <td>{{client.money}}</td>
+  </tr>
+  </tbody>
+</table>
