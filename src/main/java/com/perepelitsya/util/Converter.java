@@ -1,6 +1,6 @@
-package com.computershop.util;
+package com.perepelitsya.util;
 
-import com.computershop.model.Currency;
+import com.perepelitsya.model.enums.Currency;
 import org.springframework.stereotype.Component;
 
 @Component
