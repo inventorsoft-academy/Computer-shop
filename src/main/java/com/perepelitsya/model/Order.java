@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public class Order {
-    private long id;
+    private int id;
     private int quantity;
     private Product product;
+    private Client client;
     private LocalDateTime dateBuy;
 }
 

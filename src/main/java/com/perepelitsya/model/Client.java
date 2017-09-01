@@ -4,7 +4,6 @@ import com.perepelitsya.util.CustomValidator;
 import lombok.*;
 
 import java.util.HashMap;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,10 +11,9 @@ import java.util.List;
 @Getter
 @ToString
 public class Client implements CustomValidator {
-    private long id;
+    private int id;
     private String firstName;
     private String lastName;
-    private List<Order> my_orders;
 
     @Override
     public HashMap<String, String> validate() {
