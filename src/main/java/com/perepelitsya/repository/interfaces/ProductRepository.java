@@ -1,4 +1,4 @@
-package com.perepelitsya.dao.interfaces;
+package com.perepelitsya.repository.interfaces;
 
 import com.perepelitsya.model.Product;
 
@@ -8,16 +8,16 @@ import java.util.List;
 /**
  * Created by Andriu on 8/31/2017.
  */
-public interface ProductDao {
+public interface ProductRepository {
 
     void saveProduct(Product product);
 
     void updateProduct(Product product);
 
-    void deleteProduct(long id);
+    void deleteProduct(int id);
 
     List<Product> getAllProducts() throws SQLException;
 
-    Product getProductById(long id) throws SQLException;
+    Product getProductById(int id) throws SQLException;
 
 }

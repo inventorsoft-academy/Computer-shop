@@ -1,4 +1,4 @@
-package com.perepelitsya.dao.interfaces;
+package com.perepelitsya.repository.interfaces;
 
 import com.perepelitsya.model.Order;
 
@@ -7,16 +7,16 @@ import java.util.List;
 /**
  * Created by Andriu on 8/31/2017.
  */
-public interface OrderDao {
+public interface OrderRepository {
 
     void saveOrder(Order order);
 
     void updateOrder(Order order);
 
-    void deleteOrder(long id);
+    void deleteOrder(int id);
 
     List<Order> getAllOrders();
 
-    Order getOrderById(long id);
+    Order getOrderById(int id);
 
 }

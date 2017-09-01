@@ -1,9 +1,9 @@
-package com.perepelitsya.dao.impls;
+package com.perepelitsya.repository.impls;
 
-import com.perepelitsya.dao.interfaces.ClientDao;
 import com.perepelitsya.model.Client;
+import com.perepelitsya.repository.interfaces.ClientRepository;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,31 +12,30 @@ import java.util.List;
 /**
  * Created by Andriu on 8/31/2017.
  */
-@Component
-public class ClientDaoImpls implements ClientDao {
+@Repository
+public class ClientRepositoryImpl implements ClientRepository {
 
-    private final static Logger log = Logger.getLogger(ClientDaoImpls.class);
+    private final static Logger log = Logger.getLogger(ClientRepositoryImpl.class);
 
-    Connection connection;
-    PreparedStatement preparedStatement;
+    private Connection connection;
 
-    public ClientDaoImpls() {
+    public ClientRepositoryImpl() {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/computer", "postgres", "root");
             log.info("try to connect to db");
         } catch (Exception e) {
             log.error("problem with connection to db");
+            log.error(e.getMessage());
         }
     }
 
     @Override
     public void saveClient(Client client) {
         try {
-            preparedStatement = connection.prepareStatement("insert into client values(?, ?, ?)");
-            preparedStatement.setInt(1, (int) client.getId());
-            preparedStatement.setString(2, client.getFirstName());
-            preparedStatement.setString(3, client.getLastName());
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into client (firstname, lastname) values( ?, ?)");
+            preparedStatement.setString(1, client.getFirstName());
+            preparedStatement.setString(2, client.getLastName());
             int ok = preparedStatement.executeUpdate();
             if (ok != 0) {
                 log.info("Client saved");
@@ -52,7 +51,7 @@ public class ClientDaoImpls implements ClientDao {
     @Override
     public void updateClient(Client client) {
         try {
-            preparedStatement = connection.prepareStatement("update client set firstname=?,lastname=? ");
+            PreparedStatement preparedStatement = connection.prepareStatement("update client set firstname=?,lastname=? ");
             preparedStatement.setString(1, client.getFirstName());
             preparedStatement.setString(2, client.getLastName());
             int i = preparedStatement.executeUpdate();
@@ -68,10 +67,10 @@ public class ClientDaoImpls implements ClientDao {
     }
 
     @Override
-    public void deleteClient(long id) {
+    public void deleteClient(int id) {
         try {
-            preparedStatement = connection.prepareStatement("DELETE FROM client WHERE id = ?");
-            preparedStatement.setInt(1, (int) id);
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM client WHERE id = ?");
+            preparedStatement.setInt(1, id);
             int ok = preparedStatement.executeUpdate();
             if (ok != 0) {
                 log.info("Client deleted");
@@ -105,11 +104,12 @@ public class ClientDaoImpls implements ClientDao {
         return clients;
     }
 
-    public Client getClientById(long id) {
+    @Override
+    public Client getClientById(int id) {
         Client client = null;
         try {
-            preparedStatement = connection.prepareStatement("select * from client where id=?");
-            preparedStatement.setInt(1, (int) id);
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from client where id=?");
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 client = new Client();
@@ -120,9 +120,7 @@ public class ClientDaoImpls implements ClientDao {
             log.info("You see client: " + client.getFirstName());
         } catch (SQLException e) {
             log.error(e.getMessage());
-
         }
         return client;
     }
 }
-

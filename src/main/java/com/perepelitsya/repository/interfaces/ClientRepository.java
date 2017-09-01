@@ -1,4 +1,4 @@
-package com.perepelitsya.dao.interfaces;
+package com.perepelitsya.repository.interfaces;
 
 import com.perepelitsya.model.Client;
 
@@ -8,14 +8,14 @@ import java.util.List;
 /**
  * Created by Andriu on 8/31/2017.
  */
-public interface ClientDao {
+public interface ClientRepository {
     void saveClient(Client client);
 
     void updateClient(Client client);
 
-    void deleteClient(long id);
+    void deleteClient(int id);
 
     List<Client> getAllClients() throws SQLException;
 
-   Client getClientById(long id);
+   Client getClientById(int id);
 }

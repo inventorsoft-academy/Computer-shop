@@ -1,6 +1,6 @@
-package com.perepelitsya.dao.impls;
+package com.perepelitsya.repository.impls;
 
-import com.perepelitsya.dao.interfaces.OrderDao;
+import com.perepelitsya.repository.interfaces.OrderRepository;
 import com.perepelitsya.model.Order;
 import org.apache.log4j.Logger;
 
@@ -12,14 +12,14 @@ import java.util.List;
 /**
  * Created by Andriu on 8/31/2017.
  */
-public class OrderDaoImpls implements OrderDao {
+public class OrderRepositoryImpl implements OrderRepository {
 
-    private final static Logger log = Logger.getLogger(OrderDaoImpls.class);
+    private final static Logger log = Logger.getLogger(OrderRepositoryImpl.class);
 
     Connection connection;
     PreparedStatement preparedStatement;
 
-    public OrderDaoImpls() {
+    public OrderRepositoryImpl() {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/computer", "postgres", "root");
@@ -41,7 +41,7 @@ public class OrderDaoImpls implements OrderDao {
     }
 
     @Override
-    public void deleteOrder(long id) {
+    public void deleteOrder(int id) {
         try {
             preparedStatement = connection.prepareStatement("DELETE FROM orders WHERE id = ?" );
             preparedStatement.setInt(1, (int) id);
@@ -62,7 +62,7 @@ public class OrderDaoImpls implements OrderDao {
     }
 
 
-    public Order getOrderById(long id) {
+    public Order getOrderById(int id) {
         return null;
     }
 }
