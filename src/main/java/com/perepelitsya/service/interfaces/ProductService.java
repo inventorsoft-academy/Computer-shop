@@ -1,6 +1,7 @@
 package com.perepelitsya.service.interfaces;
 
 import com.perepelitsya.model.Product;
+import com.perepelitsya.exception.JdbcCustomException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,7 +19,7 @@ public interface ProductService {
 
     List<Product> getAllProducts() throws SQLException;
 
-    Product getProductById(int id) throws SQLException;
+    Product getProductById(int id) throws JdbcCustomException;
 
 
 }

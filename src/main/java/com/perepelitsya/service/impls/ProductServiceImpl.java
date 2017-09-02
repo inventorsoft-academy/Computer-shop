@@ -3,6 +3,7 @@ package com.perepelitsya.service.impls;
 import com.perepelitsya.model.Product;
 import com.perepelitsya.repository.interfaces.ProductRepository;
 import com.perepelitsya.service.interfaces.ProductService;
+import com.perepelitsya.exception.JdbcCustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(int id) throws SQLException {
+    public Product getProductById(int id) throws JdbcCustomException {
         return repository.getProductById(id);
     }
 }
