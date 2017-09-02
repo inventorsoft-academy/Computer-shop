@@ -1,14 +1,12 @@
 package com.perepelitsya.repository.impls;
 
-import com.perepelitsya.repository.interfaces.ProductRepository;
+import com.perepelitsya.exception.JdbcCustomException;
 import com.perepelitsya.model.Product;
 import com.perepelitsya.model.enums.Currency;
+import com.perepelitsya.repository.interfaces.ProductRepository;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +18,13 @@ import java.util.List;
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final static Logger log = Logger.getLogger(ProductRepositoryImpl.class);
+
+    private final static String saveProductQuery = "insert into product ( name, price, currency)  values(?, ?, ?)";
+    private final static String updateProductQuery = "UPDATE product SET name=?, price=?, currency=? ";
+    private final static String deleteProductByIDQuery = "DELETE FROM product WHERE id = ?";
+    private final static String getAllProductsQuery = "SELECT (id, name, price, currency) FROM product";
+    private final static String getProductByIDQuery = "select (name, price, currency) from  product where id=?";
+
     private Connection connection;
 
     public ProductRepositoryImpl() {
@@ -29,14 +34,14 @@ public class ProductRepositoryImpl implements ProductRepository {
             log.info("try to connect to db");
         } catch (Exception e) {
             log.error("problem with connection to db");
-            log.error(e.getMessage());
         }
     }
+
 
     @Override
     public void saveProduct(Product product) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("insert into product ( name, price, currency)  values(?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement(saveProductQuery);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setString(3, product.getCurrency().name());
@@ -46,16 +51,15 @@ public class ProductRepositoryImpl implements ProductRepository {
                 log.info("Product saved");
             }
         } catch (Exception e) {
-            //todo need to handle error
-            log.error(e.getMessage());
-            log.error("Cannot saved new Product");
+            throw new JdbcCustomException(e.getMessage());
+
         }
     }
 
     @Override
     public void updateProduct(Product product) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE product SET name=?, price=?, currency=? ");
+            PreparedStatement preparedStatement = connection.prepareStatement(updateProductQuery);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setObject(3, product.getCurrency().name());
@@ -64,33 +68,33 @@ public class ProductRepositoryImpl implements ProductRepository {
                 log.info("Product updated");
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error("Cannot  updated Product");
+            throw new JdbcCustomException(e.getMessage());
+
         }
     }
 
     @Override
     public void deleteProduct(int id) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM product WHERE id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteProductByIDQuery);
             preparedStatement.setInt(1, id);
             int ok = preparedStatement.executeUpdate();
             if (ok != 0) {
                 log.info("Product deleted");
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error("Cannot delete  Product");
-        }
+            throw new JdbcCustomException(e.getMessage());
 
+        }
     }
 
     @Override
     public List<Product> getAllProducts() throws SQLException {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM product");
+
         List<Product> products = new ArrayList<>();
         try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(getAllProductsQuery);
             while (resultSet.next()) {
                 Product product = new Product();
                 product.setId((Integer) resultSet.getObject(1));
@@ -101,39 +105,28 @@ public class ProductRepositoryImpl implements ProductRepository {
             }
             log.info("You see all product from db");
         } catch (Exception e) {
-            log.error(e.getMessage());
+            throw new JdbcCustomException(e.getMessage());
         }
         return products;
     }
 
     @Override
-    public Product getProductById(int id) throws SQLException {
+    public Product getProductById(int id) throws JdbcCustomException {
         Product product = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from product where id=?");
-            preparedStatement.setInt(1,  id);
+            PreparedStatement preparedStatement = connection.prepareStatement(getProductByIDQuery);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 product = new Product();
-                product.setId((Integer) resultSet.getObject(1));
-                product.setName((String) resultSet.getObject(2));
-                product.setPrice((Double) resultSet.getObject(3));
-                product.setCurrency(Currency.valueOf((String) resultSet.getObject(4)));
+                product.setName((String) resultSet.getObject(1));
+                product.setPrice((Double) resultSet.getObject(2));
+                product.setCurrency(Currency.valueOf((String) resultSet.getObject(3)));
             }
             log.info("You see product: " + product.getName());
         } catch (SQLException e) {
-            log.error(e.getMessage());
+            throw new JdbcCustomException(e.getMessage());
         }
         return product;
     }
-
-//    @PreDestroy
-//    private void close(){
-//        if(connection!=null)
-//            try {
-//                connection.close();
-//            } catch (SQLException e) {
-//                //todo handle exception
-//            }
-//    }
 }
