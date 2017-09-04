@@ -1,0 +1,21 @@
+<h1 align="center">All products</h1>
+<table class="table table-responsive">
+  <thead>
+  <tr >
+    <th>Name</th>
+    <th>Price</th>
+    <th>Currency</th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let product of productsList">
+    <td (click)="showProductInfo(product.id)">{{product.name}}</td>
+    <td (click)="showProductInfo(product.id)">{{product.price}}</td>
+    <td (click)="showProductInfo(product.id)">{{product.currency}}</td>
+    <td><button (click)="deleteProductById(product.id)" md-raised-button>Delete</button></td>
+    <td><button (click)="updateProductGet(product.id)" md-raised-button>Update</button></td>
+  </tr>
+  </tbody>
+</table>

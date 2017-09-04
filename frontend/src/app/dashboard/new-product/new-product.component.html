@@ -1,0 +1,58 @@
+<h3 align="center">Registration new Product</h3>
+<div fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="center start">
+    <form fxLayoutAlign="center start" [formGroup]="newProductForm" (submit)="addProduct()" class="full-width">
+      <table class="full-width" cellspacing="0">
+
+        <tr>
+          <td>
+            <md-select formControlName="currency" placeholder="Select currency" floatPlaceholder="never" class="full-width">
+              <md-option [value]="currency" *ngFor="let currency of currencyTypeList">{{currency}}</md-option>
+            </md-select>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <md-input-container class="full-width">
+              <input mdInput placeholder="Name Of Product" formControlName="name">
+              <md-error *ngIf="newProductForm.get('name').hasError('required')">
+                Name of product can not be null
+              </md-error>
+              <md-error *ngIf="newProductForm.get('name').hasError('minLength')">
+                Min length 5<strong>required</strong>
+              </md-error>
+              <md-error *ngIf="newProductForm.get('name').hasError('maxLength')">
+                Max <strong>required</strong>
+              </md-error>
+            </md-input-container>
+          </td>
+        </tr>
+
+
+        <tr>
+          <td>
+            <md-input-container class="full-width">
+              <input mdInput placeholder="price" formControlName="price">
+              <md-error *ngIf="newProductForm.get('price').hasError('required')">
+                You firstName can not be null
+              </md-error>
+              <md-error *ngIf="newProductForm.get('price').hasError('min')">
+                Min length 5<strong>required</strong>
+              </md-error>
+              <md-error *ngIf="newProductForm.get('price').hasError('max')">
+                Max <strong>required</strong>
+              </md-error>
+            </md-input-container>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <button md-raised-button>Save product</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>

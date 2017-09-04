@@ -1,0 +1,51 @@
+<div class="container">
+  <div>FirstName: {{client?.firstName}}</div>
+  <div>LastName: {{client?.lastName}}</div>
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="center start">
+      <form fxLayoutAlign="center start" [formGroup]="updateClientForm" (submit)="updateClient()" class="full-width">
+        <table class="full-width" cellspacing="0">
+          <tr>
+            <td>
+              <md-input-container class="full-width">
+                <input mdInput placeholder="firstName" formControlName="firstName">
+                <md-error *ngIf="updateClientForm.get('firstName').hasError('required')">
+                  You firstName can not be null
+                </md-error>
+                <md-error *ngIf="updateClientForm.get('firstName').hasError('minLength')">
+                  Min length 5<strong>required</strong>
+                </md-error>
+                <md-error *ngIf="updateClientForm.get('firstName').hasError('maxLength')">
+                  Max <strong>required</strong>
+                </md-error>
+              </md-input-container>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <md-input-container class="full-width">
+                <input mdInput placeholder="lastName" formControlName="lastName">
+                <md-error *ngIf="updateClientForm.get('lastName').hasError('required')">
+                  You firstName can not be null
+                </md-error>
+                <md-error *ngIf="updateClientForm.get('lastName').hasError('minLength')">
+                  Min length 5<strong>required</strong>
+                </md-error>
+                <md-error *ngIf="updateClientForm.get('lastName').hasError('maxLength')">
+                  Max <strong>required</strong>
+                </md-error>
+              </md-input-container>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <button md-raised-button>Update Client</button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>

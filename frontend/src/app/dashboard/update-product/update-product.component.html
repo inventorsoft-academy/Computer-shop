@@ -1,0 +1,63 @@
+<div class="container">
+  <div>Name: {{product?.name}}</div>
+  <div>Price: {{product?.price}}</div>
+  <div>Currency: {{product?.currency}}</div>
+</div>
+
+<div fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="center start">
+    <form fxLayoutAlign="center start" [formGroup]="updateProductForm" (submit)="updateProduct()" class="full-width">
+      <table class="full-width" cellspacing="0">
+
+        <tr>
+          <td>
+            <md-select formControlName="currency" placeholder="Select currency" floatPlaceholder="never" class="full-width">
+              <md-option [value]="currency" *ngFor="let currency of currencyTypeList">{{currency}}</md-option>
+            </md-select>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <md-input-container class="full-width">
+              <input mdInput placeholder="name" formControlName="name">
+              <md-error *ngIf="updateProductForm.get('name').hasError('required')">
+                Name of product can not be null
+              </md-error>
+              <md-error *ngIf="updateProductForm.get('name').hasError('minLength')">
+                Min length 5<strong>required</strong>
+              </md-error>
+              <md-error *ngIf="updateProductForm.get('name').hasError('maxLength')">
+                Max <strong>required</strong>
+              </md-error>
+            </md-input-container>
+          </td>
+        </tr>
+
+
+        <tr>
+          <td>
+            <md-input-container class="full-width">
+              <input mdInput placeholder="price" formControlName="price">
+              <md-error *ngIf="updateProductForm.get('price').hasError('required')">
+                You firstName can not be null
+              </md-error>
+              <md-error *ngIf="updateProductForm.get('price').hasError('min')">
+                Min length 5<strong>required</strong>
+              </md-error>
+              <md-error *ngIf="updateProductForm.get('price').hasError('max')">
+                Max <strong>required</strong>
+              </md-error>
+            </md-input-container>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <button md-raised-button>Update product</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
