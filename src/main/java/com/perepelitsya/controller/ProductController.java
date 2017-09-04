@@ -1,6 +1,8 @@
 package com.perepelitsya.controller;
 
+import com.perepelitsya.exception.JdbcCustomException;
 import com.perepelitsya.model.Product;
+import com.perepelitsya.model.enums.Currency;
 import com.perepelitsya.service.interfaces.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,13 +27,20 @@ public class ProductController {
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public List<Product> getAll() throws SQLException {
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAll() throws SQLException {
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
+    @ExceptionHandler(JdbcCustomException.class)
     public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
         productService.saveProduct(product);
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "{productId:\\d+}", method = RequestMethod.PUT)
+    public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable int productId) {
+        productService.updateProduct(product,productId);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
@@ -42,7 +51,19 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{productId:\\d+}", method = RequestMethod.GET)
-    public ResponseEntity<Product> getById(@PathVariable int productId) throws SQLException {
-        return new ResponseEntity<>(productService.getProductById(productId), HttpStatus.OK);
+    @ExceptionHandler(JdbcCustomException.class)
+    public ResponseEntity<Product> getById(@PathVariable int productId) throws JdbcCustomException {
+        if (productService.getProductById(productId) != null) {
+            return new ResponseEntity<>(productService.getProductById(productId), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/currency", method = RequestMethod.GET)
+    public ResponseEntity<List<Currency>> getCurrency() {
+        if (productService.currencyList() != null) {
+            return new ResponseEntity<>(productService.currencyList(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -1,5 +1,6 @@
 package com.perepelitsya.controller;
 
+import com.perepelitsya.exception.JdbcCustomException;
 import com.perepelitsya.model.Client;
 import com.perepelitsya.service.impls.ClientServiceImpl;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = "/clients")
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
+@CrossOrigin(origins = "*",  methods = {RequestMethod.GET,  RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class ClientController {
 
     private ClientServiceImpl service;
@@ -34,6 +35,12 @@ public class ClientController {
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "{clientId:\\d+}", method = RequestMethod.PUT)
+    public ResponseEntity<Client> updateClient(@RequestBody Client client, @PathVariable int clientId) {
+        service.updateClient(client, clientId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{clientId:\\d+}", method = RequestMethod.DELETE)
     public ResponseEntity<Client> delete(@PathVariable int clientId) {
         service.deleteClient(clientId);
@@ -41,7 +48,11 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/{clientId:\\d+}", method = RequestMethod.GET)
+    @ExceptionHandler(JdbcCustomException.class)
     public ResponseEntity<Client> getById(@PathVariable int clientId) {
-        return new ResponseEntity<>(service.getClientById(clientId), HttpStatus.OK);
+        if (service.getClientById(clientId) != null) {
+            return new ResponseEntity<>(service.getClientById(clientId), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
