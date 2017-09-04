@@ -1,5 +1,6 @@
 package com.perepelitsya.service.impls;
 
+import com.perepelitsya.exception.JdbcCustomException;
 import com.perepelitsya.model.Client;
 import com.perepelitsya.repository.impls.ClientRepositoryImpl;
 import com.perepelitsya.repository.interfaces.ClientRepository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Andriu on 8/30/2017.
@@ -22,12 +24,29 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void saveClient(Client client) {
-        clientRepository.saveClient(client);
+        if(client.validate().isEmpty()) {
+            clientRepository.saveClient(client);
+        }
+        else{
+            for (Map.Entry<String, String> map : client.validate().entrySet()) {
+                System.out.println(map.getValue() + ". False: " + map.getKey());
+            }
+            throw  new JdbcCustomException("Cannot save");
+        }
     }
 
     @Override
-    public void updateClient(Client client) {
-        clientRepository.updateClient(client);
+    public void updateClient(Client client, int id) {
+        if(client.validate().isEmpty()) {
+            clientRepository.updateClient(client, id);
+        }
+        else{
+            for (Map.Entry<String, String> map : client.validate().entrySet()) {
+                System.out.println(map.getValue() + ". False: " + map.getKey());
+            }
+            throw  new JdbcCustomException("Cannot update");
+        }
+
     }
 
     @Override

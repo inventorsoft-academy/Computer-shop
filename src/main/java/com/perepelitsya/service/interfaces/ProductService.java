@@ -1,7 +1,8 @@
 package com.perepelitsya.service.interfaces;
 
-import com.perepelitsya.model.Product;
 import com.perepelitsya.exception.JdbcCustomException;
+import com.perepelitsya.model.Product;
+import com.perepelitsya.model.enums.Currency;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface ProductService {
 
     void saveProduct(Product product);
 
-    void updateProduct(Product product);
+    void updateProduct(Product product, int id);
 
     void deleteProduct(int id);
 
@@ -21,5 +22,5 @@ public interface ProductService {
 
     Product getProductById(int id) throws JdbcCustomException;
 
-
+    List<Currency> currencyList();
 }

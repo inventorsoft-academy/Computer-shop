@@ -12,7 +12,7 @@ public interface ClientService {
 
     void saveClient(Client client);
 
-    void updateClient(Client client);
+    void updateClient(Client client, int id);
 
     void deleteClient(int id);
 

@@ -1,13 +1,15 @@
 package com.perepelitsya.service.impls;
 
+import com.perepelitsya.exception.JdbcCustomException;
 import com.perepelitsya.model.Product;
+import com.perepelitsya.model.enums.Currency;
 import com.perepelitsya.repository.interfaces.ProductRepository;
 import com.perepelitsya.service.interfaces.ProductService;
-import com.perepelitsya.exception.JdbcCustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,12 +23,27 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveProduct(Product product) {
-        repository.saveProduct(product);
+        if (product.validate().isEmpty()) {
+            repository.saveProduct(product);
+        } else {
+            for (Map.Entry<String, String> map : product.validate().entrySet()) {
+                System.out.println(map.getValue() + ". False: " + map.getKey());
+            }
+            throw new JdbcCustomException("Cannot save");
+        }
     }
 
     @Override
-    public void updateProduct(Product product) {
-        repository.updateProduct(product);
+    public void updateProduct(Product product, int id) {
+        if (product.validate().isEmpty()) {
+            repository.updateProduct(product, id);
+        } else {
+            for (Map.Entry<String, String> map : product.validate().entrySet()) {
+                System.out.println(map.getValue() + ". False: " + map.getKey());
+            }
+            throw new JdbcCustomException("Cannot update");
+        }
+
     }
 
     @Override
@@ -42,5 +59,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(int id) throws JdbcCustomException {
         return repository.getProductById(id);
+    }
+
+    public List<Currency> currencyList() {
+        return Arrays.asList(Currency.values());
     }
 }
