@@ -68,8 +68,9 @@ export class HttpService {
     return this.http.put(url, obj).map(res => res.json());
   }
 
+
   getCurrentTypes(): Observable<any> {
-    const url = `${this.API}currency`;
+    const url = `${this.API}products/currency`;
     console.log(url);
     return this.http.get(url).map(res => res.json());
   }

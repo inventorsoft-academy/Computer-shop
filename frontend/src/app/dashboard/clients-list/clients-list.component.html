@@ -12,8 +12,8 @@
   <tr *ngFor="let client of clientsList">
     <td (click)="showClientInfo(client.id)">{{client.firstName}}</td>
     <td (click)="showClientInfo(client.id)">{{client.lastName}}</td>
-    <td> <button (click)="deleteClientById(client.id)" md-raised-button>DeLeTe</button></td>
-    <td><button (click)="updateClientGet(client.id)" md-raised-button>UpDaTe</button></td>
+    <td> <button (click)="deleteClientById(client.id)" md-raised-button>Delete</button></td>
+    <td><button (click)="updateClientGet(client.id)" md-raised-button>Update</button></td>
   </tr>
   </tbody>
 </table>

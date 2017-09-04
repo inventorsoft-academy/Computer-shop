@@ -1,12 +1,13 @@
-
 <h3 align="center">Registration new Client</h3>
 <div fxLayout="column">
-  <div  fxLayout="row" fxLayoutAlign="center start">
+  <div fxLayout="row" fxLayoutAlign="center start">
     <form fxLayoutAlign="center start" [formGroup]="newClientForm" (submit)="addClient()" class="full-width">
       <table class="full-width" cellspacing="0">
 
         <tr>
           <td>
+
+            {{ newClientForm.get("firstName").value }}
             <md-input-container class="full-width">
               <input mdInput placeholder="firstName" formControlName="firstName">
               <md-error *ngIf="newClientForm.get('firstName').hasError('required')">
@@ -25,7 +26,7 @@
         <tr>
           <td>
             <md-input-container class="full-width">
-              <input mdInput placeholder="lastName" formControlName="lastName">
+              <input minlength="4" maxlength="56" mdInput placeholder="lastName" formControlName="lastName">
               <md-error *ngIf="newClientForm.get('lastName').hasError('required')">
                 You firstName can not be null
               </md-error>
