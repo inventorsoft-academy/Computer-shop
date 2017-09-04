@@ -18,10 +18,10 @@ public class Client implements CustomValidator {
     @Override
     public HashMap<String, String> validate() {
         HashMap<String, String> valid = new HashMap<>();
-        if (firstName == null || firstName.length() < 4 || firstName.length() > 40) {
+        if (firstName == null || firstName.length() < 5 || firstName.length() > 56) {
             valid.put(firstName, "Incorrect value firstname\nFirstName cannot be null. FirstName must be more than 4 and less than 20");
         }
-        if (lastName == null || lastName.length() < 4 || lastName.length() > 40) {
+        if (lastName == null || lastName.length() < 5 || lastName.length() > 56) {
             valid.put(lastName, "Incorrect value lastname\nLastName cannot be null. LastName must be more than 4 and less than 20");
         }
         return valid;

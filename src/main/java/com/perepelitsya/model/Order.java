@@ -12,8 +12,11 @@ import java.time.LocalDateTime;
 public class Order {
     private int id;
     private int quantity;
+
+
+    private double totalPrice;
+
     private Product product;
     private Client client;
     private LocalDateTime dateBuy;
 }
-

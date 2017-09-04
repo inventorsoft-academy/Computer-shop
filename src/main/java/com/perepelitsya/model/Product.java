@@ -4,6 +4,8 @@ import com.perepelitsya.model.enums.Currency;
 import com.perepelitsya.util.CustomValidator;
 import lombok.*;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.HashMap;
 
 @AllArgsConstructor
@@ -15,6 +17,7 @@ public class Product implements CustomValidator {
     private int id;
     private String name;
     private double price;
+    @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @Override
