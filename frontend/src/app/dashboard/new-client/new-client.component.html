@@ -1,12 +1,50 @@
-<div class="container" style="width: 35%;">
-  <form [formGroup]="newClientForm" (submit)="addClient()">
-    <label for="firstName">FirstName</label>
-    <input formControlName="firstName" id="firstName" class="form-control">
-    <label for="lastName">LastName</label>
-    <input formControlName="lastName" id="lastName" class="form-control">
-    <label for="money">Money</label>
-    <input formControlName="money" id="money" class="form-control">
-    <hr>
-    <button type="submit" class="btn btn-primary" [disabled]="newClientForm.invalid">Add Client</button>
-  </form>
+
+<h3 align="center">Registration new Client</h3>
+<div fxLayout="column">
+  <div  fxLayout="row" fxLayoutAlign="center start">
+    <form fxLayoutAlign="center start" [formGroup]="newClientForm" (submit)="addClient()" class="full-width">
+      <table class="full-width" cellspacing="0">
+
+        <tr>
+          <td>
+            <md-input-container class="full-width">
+              <input mdInput placeholder="firstName" formControlName="firstName">
+              <md-error *ngIf="newClientForm.get('firstName').hasError('required')">
+                You firstName can not be null
+              </md-error>
+              <md-error *ngIf="newClientForm.get('firstName').hasError('minLength')">
+                Min length 5<strong>required</strong>
+              </md-error>
+              <md-error *ngIf="newClientForm.get('firstName').hasError('maxLength')">
+                Max <strong>required</strong>
+              </md-error>
+            </md-input-container>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <md-input-container class="full-width">
+              <input mdInput placeholder="lastName" formControlName="lastName">
+              <md-error *ngIf="newClientForm.get('lastName').hasError('required')">
+                You firstName can not be null
+              </md-error>
+              <md-error *ngIf="newClientForm.get('lastName').hasError('minLength')">
+                Min length 5<strong>required</strong>
+              </md-error>
+              <md-error *ngIf="newClientForm.get('lastName').hasError('maxLength')">
+                Max <strong>required</strong>
+              </md-error>
+            </md-input-container>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <button md-raised-button>Add Client</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
 </div>

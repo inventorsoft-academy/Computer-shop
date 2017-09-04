@@ -1,19 +1,19 @@
-<h1>All clients</h1>
+<h1 align="center">All clients</h1>
 <table class="table table-responsive">
   <thead>
   <tr>
-    <th>Id</th>
-    <th>FirstName</th>
+    <th>FirtsName</th>
     <th>LastName</th>
-    <th>Money</th>
+    <th></th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let client of clientsList" (click)="showClientInfo(client.id)">
-    <td>{{client.id}}</td>
-    <td>{{client.firstName}}</td>
-    <td>{{client.lastName}}</td>
-    <td>{{client.money}}</td>
+  <tr *ngFor="let client of clientsList">
+    <td (click)="showClientInfo(client.id)">{{client.firstName}}</td>
+    <td (click)="showClientInfo(client.id)">{{client.lastName}}</td>
+    <td> <button (click)="deleteClientById(client.id)" md-raised-button>DeLeTe</button></td>
+    <td><button (click)="updateClientGet(client.id)" md-raised-button>UpDaTe</button></td>
   </tr>
   </tbody>
 </table>
